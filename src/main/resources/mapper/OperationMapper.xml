@@ -1,0 +1,47 @@
+<mapper namespace="org.yuxun.x.nexusx.Mapper.OperationMapper">
+
+
+    <!-- 按状态统计 -->
+    <select id="countByStatus" resultType="java.util.HashMap">
+        SELECT
+        status AS `key`,
+        COUNT(*) AS `value`
+        FROM operation_logs
+        WHERE created_at BETWEEN #{start} AND #{end}
+        GROUP BY status
+    </select>
+
+    <!-- 按操作名称分组统计 -->
+    <select id="groupByOperation" resultType="java.util.HashMap">
+        SELECT
+        operation AS `operation`,
+        COUNT(*) AS `count`
+        FROM operation_logs
+        WHERE created_at BETWEEN #{start} AND #{end}
+        GROUP BY operation
+    </select>
+
+    <!-- 查询日志 -->
+    <select id="queryLogs" resultType="org.yuxun.x.nexusx.Entity.Operation_logs">
+        SELECT * FROM operation_logs
+        WHERE 1=1
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="deviceId != null">
+            AND device_id = #{deviceId}
+        </if>
+        <if test="startTime != null">
+            AND created_at &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND created_at &lt;= #{endTime}
+        </if>
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 删除旧日志 -->
+    <delete id="clearOldLogs">
+        DELETE FROM operation_logs WHERE created_at &lt; #{cutoffTime}
+    </delete>
+</mapper>
