@@ -2,7 +2,7 @@ package org.yuxun.x.nexusx.Model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.yuxun.x.nexusx.DTO.UserRegistrationAndUpdateDTO;
+import org.yuxun.x.nexusx.DTO.UserNormalDTO;
 
 import java.time.LocalDateTime;
 
@@ -39,8 +39,8 @@ public class UserModel {
     }
 
     /*数据转换方法（DTO<-->Model）*/
-    public UserRegistrationAndUpdateDTO toDTO() {
-        UserRegistrationAndUpdateDTO userDTO = new UserRegistrationAndUpdateDTO();
+    public UserNormalDTO toDTO() {
+        UserNormalDTO userDTO = new UserNormalDTO();
         userDTO.setUsername(this.user_name);
         userDTO.setEmail(this.email);
         userDTO.setPassword(this.password);

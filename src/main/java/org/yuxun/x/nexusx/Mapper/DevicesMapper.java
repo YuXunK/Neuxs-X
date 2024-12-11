@@ -2,6 +2,7 @@ package org.yuxun.x.nexusx.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Param;
 import org.yuxun.x.nexusx.Entity.Devices;
 
 import java.time.LocalDateTime;
@@ -71,9 +72,9 @@ public interface DevicesMapper extends BaseMapper<Devices> {
     /**
      * 更新设备状态，心跳超时的设备更新为离线
      */
-    @Update("UPDATE devices SET status = 'offline' WHERE last_heartbeat_time < #{cutoffTime} AND status = 'online'")
+    @Update("UPDATE devices SET status = 'offline' WHERE lastHeartbeatTime < #{cutoffTime} AND status = 'online'")
     void updateDeviceStatusByHeartbeat(@Param("cutoffTime") LocalDateTime cutoffTime);
 
     // 获取心跳超时的设备
-    List<Devices> getDevicesByLastHeartbeatTimeBefore(LocalDateTime cutoffTime);
+    List<Devices> getDevicesByLastHeartbeatTimeBefore(@Param("cutoffTime") LocalDateTime cutoffTime);
 }

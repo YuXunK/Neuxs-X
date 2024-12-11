@@ -1,9 +1,12 @@
 package org.yuxun.x.nexusx.Utils;
 
+import org.springframework.stereotype.Component;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+@Component
 public class MagicPacketUtils {
 
     public static void sendMagicPacket(String macAddress, String broadcastIP) throws Exception {

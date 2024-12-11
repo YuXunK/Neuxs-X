@@ -1,9 +1,13 @@
 package org.yuxun.x.nexusx.Entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
@@ -12,14 +16,26 @@ import java.time.LocalDateTime;
 @Setter
 @TableName("users")
 public class User {
-    private Long user_id;
-    private String user_name;
+    @TableId(value = "userId", type = IdType.AUTO)
+    private Long userId;
+    @TableField("username")
+    private String username;
+    @TableField("userAvatar")
+    private String userAvatar;
+    @TableField("password")
     private String password;
+    @TableField("email")
     private String email;
+    @TableField("phone")
     private String phone;
-    private Byte user_status;
-    private LocalDateTime last_login_time;
-    private String last_login_ip;
-    private String created_at;
-    private String updated_at;
+    @TableField("status")
+    private Byte status;
+    @TableField("lastLoginTime")
+    private LocalDateTime lastLoginTime;
+    @TableField("lastLoginIp")
+    private String lastLoginIp;
+    @TableField("createdAt")
+    private LocalDateTime createdAt;
+    @TableField("updateAt")
+    private LocalDateTime updatedAt;
 }

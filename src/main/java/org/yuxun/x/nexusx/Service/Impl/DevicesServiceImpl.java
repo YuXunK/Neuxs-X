@@ -11,7 +11,6 @@ import org.yuxun.x.nexusx.Enmu.DeviceStatus;
 import org.yuxun.x.nexusx.Entity.Devices;
 import org.yuxun.x.nexusx.Mapper.DevicesMapper;
 import org.yuxun.x.nexusx.Service.DevicesService;
-import org.yuxun.x.nexusx.Utils.AESUtil;
 import org.yuxun.x.nexusx.Utils.MagicPacketUtils;
 
 import java.time.Duration;
@@ -47,14 +46,26 @@ public class DevicesServiceImpl extends ServiceImpl<DevicesMapper,Devices> imple
     }
 
     /**
-     * 获取设备信息
+     * 获取对应设备信息
+     * @author yuxun
      */
     @Override
-    public Devices getDeviceInfo(String deviceId) {
+    public Devices getDeviceInfo(String deviceId){
         QueryWrapper<Devices> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("device_id", deviceId);
+        queryWrapper.eq("deviceId", deviceId);
         return devicesMapper.selectOne(queryWrapper);
     }
+
+    /**
+     * 获取设备信息列表
+     */
+    @Override
+    public List<Devices> getDeviceInfoList(String userId) {
+        QueryWrapper<Devices> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId", userId);
+        return devicesMapper.selectList(queryWrapper);
+    }
+
 
 
     /**

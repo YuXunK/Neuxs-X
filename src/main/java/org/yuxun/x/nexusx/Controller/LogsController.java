@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.yuxun.x.nexusx.Entity.LogQueryCriteria;
 import org.yuxun.x.nexusx.Entity.Operation_logs;
+import org.yuxun.x.nexusx.Service.AllLogService;
 import org.yuxun.x.nexusx.Service.OperationService;
 
 import java.time.LocalDateTime;
@@ -14,13 +15,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/operations")
-public class OperationController {
+public class LogsController {
 
-    private final OperationService operationService;
+    private final AllLogService allLogService;
 
     @Autowired
-    public OperationController(OperationService operationService) {
-        this.operationService = operationService;
+    public LogsController(AllLogService allLogService) {
+        this.allLogService = allLogService;
     }
 
     /**
@@ -29,8 +30,8 @@ public class OperationController {
      * @return 操作日志列表
      */
     @PostMapping("/query-logs")
-    public ResponseEntity<List<Operation_logs>> queryLogs(@RequestBody LogQueryCriteria criteria) {
-        List<Operation_logs> logs = operationService.queryLogs(criteria);
+    public ResponseEntity<List<Operation_logs>> queryLogs(@RequestParam String userId) {
+        List<Operation_logs> logs = allLogService.getOperationLogsByUserId(userId);
         return ResponseEntity.ok(logs);
     }
 
@@ -41,9 +42,10 @@ public class OperationController {
      * @return 日志分析结果
      */
     @PostMapping("/analyze-logs")
-    public ResponseEntity<Map<String, Object>> analyzeLogs(@RequestParam LocalDateTime start,
+    public ResponseEntity<Map<String, Object>> analyzeLogs(@RequestParam String userId,
+                                                           @RequestParam LocalDateTime start,
                                                            @RequestParam LocalDateTime end) {
-        Map<String, Object> analysisResult = operationService.analyzeLogs(start, end);
+        Map<String, Object> analysisResult = allLogService.analyzeLogs(userId,start, end);
         return ResponseEntity.ok(analysisResult);
     }
 
@@ -53,9 +55,10 @@ public class OperationController {
      * @return 操作结果
      */
     @PostMapping("/clear-old-logs")
-    public ResponseEntity<String> clearOldLogs(@RequestParam LocalDateTime cutoffTime) {
+    public ResponseEntity<String> clearOldLogs(@RequestParam String userId,
+                                               @RequestParam LocalDateTime cutoffTime) {
         try {
-            operationService.clearOldLogs(cutoffTime);
+            allLogService.clearOldLogs(Long.valueOf(userId),cutoffTime);
             return ResponseEntity.ok("旧日志已清理");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("清理旧日志失败");

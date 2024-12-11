@@ -17,7 +17,7 @@ public class DevicesController {
     private final DevicesService devicesService;
     private final UserService userService;
     @Autowired
-    public DevicesController(DevicesService devicesService)
+    public DevicesController(DevicesService devicesService, UserService userService)
     {
         this.devicesService = devicesService;
         this.userService = userService;

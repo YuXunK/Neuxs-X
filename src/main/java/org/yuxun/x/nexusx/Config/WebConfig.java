@@ -16,7 +16,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimiterInterceptor)
-                .addPathPatterns("/**")  // 所有路径都进行拦截
-                .excludePathPatterns("/login", "/register"); // 登录、注册等无需验证的接口
+                .addPathPatterns("/**")  // 拦截所有路径
+                .excludePathPatterns(
+                        "/api/user/**", // 放行所有 /api/user/ 下的路径
+                        "/static/**", // 如果有静态资源路径，可以一并排除
+                        "/public/**"  // 如果有其他公共路径，也可以排除
+                )
+                .excludePathPatterns(
+                        "/api/user/register",
+                        "/api/user/login",
+                        "/api/user/logout"
+                );
     }
 }
+

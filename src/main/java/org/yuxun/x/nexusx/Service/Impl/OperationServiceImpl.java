@@ -3,15 +3,11 @@ package org.yuxun.x.nexusx.Service.Impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.yuxun.x.nexusx.DTO.OperationDTO;
-import org.yuxun.x.nexusx.Entity.LogQueryCriteria;
 import org.yuxun.x.nexusx.Entity.Operation_logs;
 import org.yuxun.x.nexusx.Mapper.OperationMapper;
 import org.yuxun.x.nexusx.Service.OperationService;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class OperationServiceImpl extends ServiceImpl<OperationMapper, Operation_logs> implements OperationService {
@@ -68,36 +64,6 @@ public class OperationServiceImpl extends ServiceImpl<OperationMapper, Operation
         operationDTO.setStatus((byte) 1);
         recordLog(operationDTO);
         System.out.println("设备重新连接: Device ID = " + deviceId);
-    }
-
-    @Override
-    public List<Operation_logs> queryLogs(LogQueryCriteria criteria) {
-        return baseMapper.queryLogs(criteria.getUserId(),
-                criteria.getDeviceId(),
-                criteria.getStartTime(),
-                criteria.getEndTime());
-    }
-
-    @Override
-    public Map<String, Object> analyzeLogs(LocalDateTime start, LocalDateTime end) {
-        Map<String, Object> analysisResult = new HashMap<>();
-
-        // 1. 按状态统计成功和失败的数量
-        Map<String, Long> statusCounts = baseMapper.countByStatus(start, end);
-        analysisResult.put("statusCounts", statusCounts);
-
-        // 2. 按操作名称分组统计操作数量
-        List<Map<String, Object>> operationCounts = baseMapper.groupByOperation(start, end);
-        analysisResult.put("operationCounts", operationCounts);
-
-        return analysisResult;
-    }
-
-
-    @Override
-    public void clearOldLogs(LocalDateTime cutoffTime) {
-        int rowsDeleted = baseMapper.clearOldLogs(cutoffTime);
-        System.out.println("清理日志成功，删除了 " + rowsDeleted + " 条记录");
     }
 
     @Override

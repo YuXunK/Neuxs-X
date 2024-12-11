@@ -1,16 +1,18 @@
 package org.yuxun.x.nexusx.Service;
 
 import org.yuxun.x.nexusx.DTO.UserLoginDTO;
-import org.yuxun.x.nexusx.DTO.UserRegistrationAndUpdateDTO;
+import org.yuxun.x.nexusx.DTO.UserNormalDTO;
+import org.yuxun.x.nexusx.DTO.UserRegistrationDTO;
 import org.yuxun.x.nexusx.Entity.User;
 import org.yuxun.x.nexusx.Response.UserLoginResponse;
 
 public interface UserService {
-    public void registerUser(UserRegistrationAndUpdateDTO registerDTO);
-    public void updateUserInfo(UserRegistrationAndUpdateDTO user);
-    public UserLoginResponse loginUser(UserLoginDTO user);
-    public void logoutUser(String tokenId);
-    public UserLoginResponse getUserByPhoneOrEmail(UserLoginDTO userLoginDTO);
-    public void userConnectedToDevice(Long userId, String deviceId);
-
+    String registerUser(UserRegistrationDTO registerDTO);
+    void updateUserInfo(UserNormalDTO user);
+    UserLoginResponse loginUser(UserLoginDTO user);
+    void logoutUser(String tokenId);
+    UserLoginResponse getUserByPhoneOrEmail(UserLoginDTO userLoginDTO);
+    void userConnectedToDevice(Long userId, String deviceId);
+    void userAddAvatar(UserNormalDTO normalDTO);
+    User getUserInfoByRedis(String userId);
 }

@@ -23,11 +23,6 @@ public interface OperationService extends IService<Operation_logs>{
     void sendUserCommand(OperationDTO operationDTO, String command);
     void handleReconnect(Long deviceId);
 
-    // 4. 日志管理
-    List<Operation_logs> queryLogs(LogQueryCriteria criteria);
-    Map<String, Object> analyzeLogs(LocalDateTime start, LocalDateTime end);
-    void clearOldLogs(LocalDateTime cutoffTime);
-
     // 5. 状态维护
     void checkDeviceStatus();
 }

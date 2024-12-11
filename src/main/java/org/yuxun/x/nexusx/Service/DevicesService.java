@@ -5,6 +5,7 @@ import org.yuxun.x.nexusx.DTO.DeviceInfoDTO;
 import org.yuxun.x.nexusx.Entity.Devices;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public interface DevicesService extends IService<Devices> {
@@ -17,11 +18,18 @@ public interface DevicesService extends IService<Devices> {
     int registerDeviceInfo(DeviceInfoDTO device);
 
     /**
-     * 获取设备的基本信息（UUID，名称，状态等）
+     * 获取对应用户的设备信息（UUID，名称，状态等）
      * @param deviceId 设备唯一标识
      * @return 设备信息
      */
     Devices getDeviceInfo(String deviceId);
+
+    /**
+     * 获取对应用户的所有设备信息（UUID，名称，状态等）
+     * @param userId 设备唯一标识
+     * @return 设备信息
+     */
+    List<Devices> getDeviceInfoList(String userId);
 
     /**
      * 获取设备的实时状态
