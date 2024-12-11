@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yuxun.x.nexusx.Entity.LogQueryCriteria;
 import org.yuxun.x.nexusx.Entity.Operation_logs;
 import org.yuxun.x.nexusx.Service.AllLogService;
-import org.yuxun.x.nexusx.Service.OperationService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,7 +24,7 @@ public class LogsController {
 
     /**
      * 查询操作日志
-     * @param criteria 查询条件
+     * @param userId 查询条件
      * @return 操作日志列表
      */
     @PostMapping("/query-logs")
