@@ -16,7 +16,7 @@ public interface DevicesMapper extends BaseMapper<Devices> {
      * @param deviceId 设备唯一标识
      * @return 设备信息
      */
-    @Select("SELECT device_id, device_name, status FROM devices WHERE device_id = #{deviceId}")
+    @Select("SELECT deviceId, deviceName, status FROM devices WHERE deviceId = #{deviceId}")
     Devices getDeviceInfo(@Param("deviceId") String deviceId);
 
     /**
@@ -24,7 +24,7 @@ public interface DevicesMapper extends BaseMapper<Devices> {
      * @param deviceId 设备唯一标识
      * @return 设备状态值
      */
-    @Select("SELECT status FROM devices WHERE device_id = #{deviceId}")
+    @Select("SELECT status FROM devices WHERE deviceId = #{deviceId}")
     Integer getDeviceStatus(@Param("deviceId") String deviceId);
 
     /**
@@ -32,7 +32,7 @@ public interface DevicesMapper extends BaseMapper<Devices> {
      * @param deviceId 设备唯一标识
      * @return 设备的最后登录时间
      */
-    @Select("SELECT last_online_time FROM devices WHERE device_id = #{deviceId}")
+    @Select("SELECT lastOnlineTime FROM devices WHERE deviceId = #{deviceId}")
     LocalDateTime getLastLoginTime(@Param("deviceId") String deviceId);
 
     /**
@@ -40,15 +40,15 @@ public interface DevicesMapper extends BaseMapper<Devices> {
      * @param cutoffTime 截止时间
      * @return 删除的设备数量
      */
-    @Delete("DELETE FROM devices WHERE user_id IS NULL AND created_at < #{cutoffTime}")
-    int deleteUnboundDevices(@Param("cutoffTime") LocalDateTime cutoffTime);
+    @Delete("DELETE FROM devices WHERE userId = ${userId} AND devices.createdAt < #{cutoffTime}")
+    int deleteUnboundDevices(@Param("cutoffTime") LocalDateTime cutoffTime, @Param("userId") String userId);
 
     /**
      * 检查设备是否已经绑定
      * @param deviceId 设备ID
      * @return 绑定状态，返回绑定的用户ID，如果没有绑定则为 NULL
      */
-    @Select("SELECT user_id FROM devices WHERE device_id = #{deviceId}")
+    @Select("SELECT userId FROM devices WHERE deviceId = #{deviceId}")
     Long checkDeviceBinding(@Param("deviceId") String deviceId);
 
     /**
@@ -57,7 +57,7 @@ public interface DevicesMapper extends BaseMapper<Devices> {
      * @param userId 用户ID
      * @return 更新结果
      */
-    @Update("UPDATE devices SET user_id = #{userId} WHERE device_id = #{deviceId}")
+    @Update("UPDATE devices SET userId = #{userId} WHERE deviceId = #{deviceId}")
     int bindDeviceToUser(@Param("deviceId") String deviceId, @Param("userId") Long userId);
 
     /**
@@ -66,7 +66,7 @@ public interface DevicesMapper extends BaseMapper<Devices> {
      * @param status 状态值
      * @return 更新结果
      */
-    @Update("UPDATE devices SET status = #{status} WHERE device_id = #{deviceId}")
+    @Update("UPDATE devices SET status = #{status} WHERE deviceId = #{deviceId}")
     int updateDeviceStatus(@Param("deviceId") String deviceId, @Param("status") int status);
 
     /**
@@ -76,5 +76,6 @@ public interface DevicesMapper extends BaseMapper<Devices> {
     void updateDeviceStatusByHeartbeat(@Param("cutoffTime") LocalDateTime cutoffTime);
 
     // 获取心跳超时的设备
+    @Select("SELECT deviceId,userId,deviceName,device_broadcast_IP,device_mac_address,status,deviceType,lastOnlineTime,lastHeartbeatTime,lastStatusUpdateTime,createdAt,updatedAt FROM devices WHERE lastHeartbeatTime = ${cutoffTime}")
     List<Devices> getDevicesByLastHeartbeatTimeBefore(@Param("cutoffTime") LocalDateTime cutoffTime);
 }
